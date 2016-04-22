@@ -1,4 +1,5 @@
 var express=require('express');
+var multer=require('multer');
 var router = express.Router();
 var fs = require('fs');
 
@@ -6,6 +7,9 @@ var fs = require('fs');
 router.post('/create',createstudent);
 router.delete('/delete/:name', deletestudent);
 router.get('/readfiles', readFiles);
+router.post('/uploadfile',uploadFile);
+
+
 
 
 function createstudent(req, res){
@@ -37,6 +41,21 @@ function readFiles(req,  res) {
     });
 }
 
+
+function uploadFile(req,res)
+{
+	console.log(req.files.file.name);
+    console.log(req.files.file.path);
+    console.log(req.files.file.type);
+    var response = {
+                   message:'File uploaded successfully',
+                   filename:req.files.file.name
+                   };
+                   
+    console.log( response );
+    res.end( JSON.stringify( response ) );	
+
+}
 module.exports = router;
 
 

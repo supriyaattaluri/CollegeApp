@@ -19,5 +19,16 @@ app.use('/teachers',teachers);
 var anounce= require('./controllers/anounce.js');
 app.use('/anounce',anounce);
 	
+
+	app.use(multer({dest:__dirname+'/public/'}).any());
+
+app.post('/upload',function(req,res){
+	//var name=req.f
+		console.log(req.body);
+    console.log(req.files[0]);
+
+    res.send('sucess');
+
+});
 app.listen(8081);
 console.log("running at 8081");		
