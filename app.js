@@ -1,5 +1,6 @@
 var express=require('express');
 var bodyparser=require('body-parser');
+var multer=require('multer');
 
 var app=express();
 
@@ -20,12 +21,13 @@ var anounce= require('./controllers/anounce.js');
 app.use('/anounce',anounce);
 	
 
-	app.use(multer({dest:__dirname+'/public/'}).any());
+app.use(multer({dest:__dirname+'/public/'}).any());
 
 app.post('/upload',function(req,res){
 	//var name=req.f
-		console.log(req.body);
-    console.log(req.files[0]);
+	console.log(req.body);
+    console.log(req.files[0]);// for first file information on console
+    console.log(req.files);// for all inserted files information on console.
 
     res.send('sucess');
 
