@@ -11,7 +11,7 @@ router.get('/readfiles', readFiles);
 function createstudent(req, res){
 	var id=req.body.id;
 	var name =req.body.name;
-	fs.writeFile('public/'+id+'.txt', name, function (err, file)
+	fs.writeFile('public/'+id+'.txt', "/*"+name+"*/", function (err, file)
 	{
 		res.json({"msg" : "successfully"});
 		console.log("inserted data");
