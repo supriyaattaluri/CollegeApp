@@ -1,61 +1,62 @@
 var express=require('express');
-var multer=require('multer');
 var router = express.Router();
-var fs = require('fs');
 
+var mongoose = require('mongoose');
+var student = mongoose.model('student');
 
 router.post('/create',createstudent);
-router.delete('/delete/:name', deletestudent);
-router.get('/readfiles', readFiles);
-router.post('/uploadfile',uploadFile);
+router.get('/show',show);
+router.get('/show/:id',showsingle);
+router.delete('/delete/:id', deletestudent);
 
 
+function createstudent(req, res)
+{
+var user = new student(req.body);
+   user.save(function(err, doc){
+     if(err){
+        console.log("record not inserted");
+        res.statusCode = 404;
+     }
+     if(doc){
+        res.json("record created");
+        console.log("record created"+ doc);
+        console.log(doc.id);
 
-
-function createstudent(req, res){
-	var id=req.body.id;
-	var name =req.body.name;
-	fs.writeFile('public/'+id+'.txt', "/*"+name+"*/", function (err, file)
-	{
-		res.json({"msg" : "successfully"});
-		console.log("inserted data");
-	    	
-	 });
+             }
+ });
 }
 
 
 function deletestudent(req, res){
-	//Delete process
-	res.json({"msg" : "Deleted"});
+  
+  student.remove({_id:req.params.id},function(err, doc){
+   
+  res.json("record Deleted");
 
+  });
 }
 
-function readFiles(req,  res) {
-    console.log("files in public directory");
-    fs.readdir("public/", function (err, files) {
-        if (err) {
-            return console.error(err);
-        		}
-    	res.json(files);
-    	console.log(files);
+
+function show(req,res){
+
+  student.find({}, function(err, list){
+    console.log(list);
+    res.json("all the records in database:"+list);
     });
+  }
+
+
+function showsingle(req , res){
+   student.findById(req.params.id, function(err, student) {
+            if (err){
+                res.send(err);
+              }
+            res.json(student);
+            console.log(student.id);
+                    });
 }
 
-
-function uploadFile(req,res)
-{
-	console.log(req.files.file.name);
-    console.log(req.files.file.path);
-    console.log(req.files.file.type);
-    var response = {
-                   message:'File uploaded successfully',
-                   filename:req.files.file.name
-                   };
-                   
-    console.log( response );
-    res.end( JSON.stringify( response ) );	
-
-}
 module.exports = router;
 
 

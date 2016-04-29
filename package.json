@@ -11,5 +11,9 @@
     "students"
   ],
   "author": "admin",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^2.1.17",
+    "mongoose": "^4.4.13"
+  }
 }
