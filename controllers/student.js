@@ -61,27 +61,13 @@ function showsingle(req , res){
 
 
 function editstudent(req,res)
-{
-  student.findById(req.params.id, function(err, student) {
+{    
+student.update({_id:req.params.id}, {$set:{username:req.body.username,
+            phone_numbers :req.body.phone_numbers,
+            college_name :req.body.college_name,
+            address : req.body.address}}, {w:1}, function(err, result) {});
 
-            if (err)
-                res.send(err);
-
-            student.username = req.body.username;
-            student.phone_numbers = req.body.phone_numbers;
-            student.college_name = req.body.college_name;
-            student.address = req.body.address; // update the student info
-
-
-            // save the student
-            student.save(function(err) {
-                if (err)
-                    res.send(err);
-
-                res.json({ message: 'student updated!' });
-            });
-
-        });
+       res.json({ message: 'student updated!' });
 
 }
 module.exports = router;
