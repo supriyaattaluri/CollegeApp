@@ -1,12 +1,15 @@
 var express=require('express');
 var router = express.Router();
 var fs = require('fs');
+var multer=require('multer');
+router.use(multer({dest:__dirname+'/public/'}).any());
 
 
-router.post('./createfile',createFile);
+
+router.post('/createfile',createFile);
 router.get('/readfiles', readFiles);
 router.post('/uploadfile',uploadFile);
-
+router.post('/upload',upload);
 
 
 function createFile(req,res)
@@ -19,6 +22,8 @@ function createFile(req,res)
        console.log("inserted data");
     });
 }
+
+
 function readFiles(req,  res) {
     console.log("files in public directory");
     fs.readdir("public/", function (err, files) {
@@ -46,4 +51,15 @@ function uploadFile(req,res)
 
 }
 
+
+
+function upload(req,res){
+ 
+ console.log(req.body);
+    console.log(req.files[0]);// for first file information on console
+    console.log(req.files);// for all inserted files information on console.
+
+    res.send('sucess');
+
+}
 module.exports = router;

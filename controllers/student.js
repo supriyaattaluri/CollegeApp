@@ -5,9 +5,10 @@ var mongoose = require('mongoose');
 var student = mongoose.model('student');
 
 router.post('/create',createstudent);
-router.get('/show',show);
-router.get('/show/:id',showsingle);
+router.get('/listall',show);
+router.get('/list/:id',showsingle);
 router.delete('/delete/:id', deletestudent);
+router.put('/edit/:id', editstudent);
 
 
 function createstudent(req, res)
@@ -52,11 +53,37 @@ function showsingle(req , res){
             if (err){
                 res.send(err);
               }
+              console.log(student.id);
             res.json(student);
-            console.log(student.id);
+            
                     });
 }
 
+
+function editstudent(req,res)
+{
+  student.findById(req.params.id, function(err, student) {
+
+            if (err)
+                res.send(err);
+
+            student.username = req.body.username;
+            student.phone_numbers = req.body.phone_numbers;
+            student.college_name = req.body.college_name;
+            student.address = req.body.address; // update the student info
+
+
+            // save the student
+            student.save(function(err) {
+                if (err)
+                    res.send(err);
+
+                res.json({ message: 'student updated!' });
+            });
+
+        });
+
+}
 module.exports = router;
 
 
