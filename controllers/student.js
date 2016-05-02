@@ -65,9 +65,14 @@ function editstudent(req,res)
 student.update({_id:req.params.id}, {$set:{username:req.body.username,
             phone_numbers :req.body.phone_numbers,
             college_name :req.body.college_name,
-            address : req.body.address}}, {w:1}, function(err, result) {});
+            address : req.body.address}}, {w:1}, function(err, result) {
+              if(err){
+                console.log(err.stack);
+              }
+              res.json({ message: 'student updated!' });
+            });
 
-       res.json({ message: 'student updated!' });
+       
 
 }
 module.exports = router;
